@@ -1,17 +1,17 @@
 import axios from "axios";
+import { Timezones } from "../../../types/types";
+import { timezonesDB } from "../../constants/constants";
 
-const getAllTimezonesFromDB = async () => {
-  const result = await axios.get(`http://localhost:5000/api`);
-  console.log(result.data);
-  return result.data;
+const getDBTimezones = async () => {
+  const response = await axios.get(timezonesDB);
+
+  return response.data;
 };
 
-const postTimezoneToDB = async (area?: string) => {
-  const result = await axios.get(
-    `http://worldtimeapi.org/api/timezone/${area}`
-  );
-  console.log(result.data);
-  return result.data;
+const createDBTimezone = async (timezone: Timezones) => {
+  const response = await axios.post(timezonesDB, timezone);
+
+  return response.data;
 };
 
-export const TimezonesDBApi = { getAllTimezonesFromDB, postTimezoneToDB };
+export const DBTimezonesApi = { getDBTimezones, createDBTimezone };

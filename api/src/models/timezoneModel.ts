@@ -7,6 +7,10 @@ const timezoneModel = new Schema({
     type: String,
     required: true,
   },
+  datetime: {
+    type: String,
+    required: true,
+  },
 });
 
 // export = mongoose.model("Timezone", timezoneModel);

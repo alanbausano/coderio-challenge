@@ -1,31 +1,35 @@
 import { useMutation, useQuery } from "react-query";
 import { QUERY_KEYS } from "../../../query-keys/query-keys";
-import { TimezonesApi } from "./api";
+import { WebTimezonesApi } from "./api";
 
-const onError = () => {
-  alert("Error al obtener timezones");
-};
+// const onSuccess = () => {
+//   console.log(data);
+// };
 
 const useTimezones = () => {
-  const { data: allTimezones } = useQuery(
+  const { mutate, data, isLoading } = useMutation(
     [QUERY_KEYS.TIMEZONES],
-    TimezonesApi.getAllTimezones,
+    WebTimezonesApi.getWebTimezone,
     {
-      onError,
+      onSuccess: (data) => console.log(data, "desde usemutation"),
+      onError: (err) => console.log(err),
     }
   );
 
-  const { mutate } = useMutation(
-    [QUERY_KEYS.TIMEZONES],
-    TimezonesApi.getTimezone,
+  const { data: alltimezones } = useQuery(
+    "all timezones",
+    WebTimezonesApi.getWebTimezones,
     {
-      onError,
+      onSuccess: (data) => console.log(data, "desde usequery"),
+      onError: (err) => console.log(err, "desde usequery error"),
     }
   );
 
   return {
-    getTimezone: mutate,
-    allTimezones,
+    fetchedTimezone: data,
+    isLoading,
+    alltimezones,
+    getWebTimezones: mutate,
   };
 };
 

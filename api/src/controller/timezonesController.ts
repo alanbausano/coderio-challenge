@@ -1,4 +1,4 @@
-const Timezone = require("../models/timezonesModel");
+const Timezone = require("../models/timezoneModel");
 const asyncHandler = require("express-async-handler");
 
 const getTimezones = asyncHandler(async (req: any, res: any) => {
@@ -11,6 +11,7 @@ const createTimezones = asyncHandler(async (req: any, res: any) => {
   console.log(req.body);
   const timezone = await Timezone.create({
     timezone: req.body.timezone,
+    datetime: req.body.datetime,
   });
   res.status(200).json(timezone);
 });

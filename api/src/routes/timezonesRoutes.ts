@@ -8,12 +8,12 @@ const {
   deleteTimezone,
 } = require("../controller/timezonesController");
 
-router.get("/api", getTimezones);
+router.get("/api/timezones", getTimezones);
 
-router.post("/api", createTimezones);
+router.post("/api/timezones", createTimezones);
 
-router.put(`/api/:id`, updateTimezones);
+router.put(`/api/timezones/:id`, updateTimezones);
 
-router.delete(`/api/:id`, deleteTimezone);
+router.delete(`/api/timezones/:id`, deleteTimezone);
 
 export default router;

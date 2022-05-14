@@ -1,3 +1,4 @@
 export type Timezones = {
-  timezones: string;
+  timezone: string;
+  datetime: string;
 };

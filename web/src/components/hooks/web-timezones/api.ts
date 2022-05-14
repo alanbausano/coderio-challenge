@@ -1,17 +1,16 @@
 import axios from "axios";
+import { timezonesWeb } from "../../constants/constants";
 
-const getAllTimezones = async () => {
-  const result = await axios.get(`http://worldtimeapi.org/api/timezone`);
-  console.log(result.data);
-  return result.data;
+const getWebTimezones = async () => {
+  const response = await axios.get(timezonesWeb);
+
+  return response.data;
 };
 
-const getTimezone = async (area?: string) => {
-  const result = await axios.get(
-    `http://worldtimeapi.org/api/timezone/${area}`
-  );
-  console.log(result.data);
-  return result.data;
+const getWebTimezone = async (timezone: string) => {
+  const response = await axios.get(`${timezonesWeb + timezone}`);
+
+  return response.data;
 };
 
-export const TimezonesApi = { getTimezone, getAllTimezones };
+export const WebTimezonesApi = { getWebTimezones, getWebTimezone };
