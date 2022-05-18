@@ -6,6 +6,7 @@ import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { TimezonesDash } from "../timezones/Timezones";
 import { useDatabaseTimezones } from "../hooks/db-timezones";
+import { STRING_KEYS } from "../../string-keys/string-keys";
 
 export const Home = () => {
   const { alltimezones, getWebTimezones, fetchedTimezone } = useTimezones();
@@ -52,6 +53,7 @@ export const Home = () => {
   const handleConfirmation = () => {
     postToDB();
     setConfirmationModal(false);
+    setTimezones("");
   };
 
   const renderFooter = () => {
@@ -75,15 +77,19 @@ export const Home = () => {
 
   return (
     <>
-      <AutoComplete
-        value={timezones}
-        suggestions={filteredTimezones}
-        completeMethod={searchTimezone}
-        onChange={(e) => setTimezones(e.value)}
-        onSelect={(e) => handleTimezone(e.value)}
-      />
+      <div className="header">
+        <h1>{STRING_KEYS.HOME_HEADER}</h1>
+        <AutoComplete
+          value={timezones}
+          suggestions={filteredTimezones}
+          completeMethod={searchTimezone}
+          onChange={(e) => setTimezones(e.value)}
+          onSelect={(e) => handleTimezone(e.value)}
+          placeholder="Search timezones"
+        />
+      </div>
       <Dialog
-        header="Header"
+        header={STRING_KEYS.CREATE_TIMEZONE_HEADER}
         visible={confirmationModal}
         position={"center"}
         modal
@@ -93,7 +99,7 @@ export const Home = () => {
         resizable={false}
         onHide={() => setConfirmationModal(false)}
       >
-        <p className="m-0">Create timezone?</p>
+        <p className="m-0">{STRING_KEYS.CREATE_TIMEZONE_CONFIRM}</p>
       </Dialog>
       <TimezonesDash />
     </>

@@ -14,4 +14,15 @@ const createDBTimezone = async (timezone: Timezones) => {
   return response.data;
 };
 
-export const DBTimezonesApi = { getDBTimezones, createDBTimezone };
+const deleteDBTimezone = async (id: number) => {
+  const response = await axios.delete(`${timezonesDB}/${id}`);
+
+  console.log(response.data);
+  return response.data;
+};
+
+export const DBTimezonesApi = {
+  getDBTimezones,
+  createDBTimezone,
+  deleteDBTimezone,
+};

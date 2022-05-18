@@ -1,25 +1,42 @@
-import { useMutation, useQuery } from "react-query";
-import { QUERY_KEYS } from "../../../query-keys/query-keys";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { STRING_KEYS } from "../../../string-keys/string-keys";
 import { DBTimezonesApi } from "./api";
 
-const useDatabaseTimezones = () => {
+const useDatabaseTimezones = (deleteConfirmationModal?: boolean) => {
+  const queryClient = useQueryClient();
+
+  const { data: databaseTimezones } = useQuery(
+    STRING_KEYS.DATABASE_TIMEZONES,
+    DBTimezonesApi.getDBTimezones
+  );
+
   const { mutate } = useMutation(
-    [QUERY_KEYS.TIMEZONES],
+    [STRING_KEYS.POST_TIMEZONE],
     DBTimezonesApi.createDBTimezone,
     {
-      onSuccess: (data) => console.log(data),
+      onSuccess: () => {
+        queryClient.invalidateQueries(STRING_KEYS.DATABASE_TIMEZONES);
+      },
+
       onError: (err) => console.log(err),
     }
   );
 
-  const { data: databaseTimezones } = useQuery(
-    "db timezones",
-    DBTimezonesApi.getDBTimezones
+  const { mutate: deleteTimezone } = useMutation(
+    [STRING_KEYS.DELETE_TIMEZONE, deleteConfirmationModal],
+    DBTimezonesApi.deleteDBTimezone,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(STRING_KEYS.DATABASE_TIMEZONES);
+      },
+      onError: (err) => console.log(err),
+    }
   );
 
   return {
     createTimezone: mutate,
     databaseTimezones,
+    deleteTimezone,
   };
 };
 
