@@ -37,7 +37,7 @@ export const Home = () => {
   const postToDB = () => {
     const postTimezoneData = {
       timezone: fetchedTimezone?.timezone,
-      datetime: fetchedTimezone?.utc_datetime,
+      datetime: fetchedTimezone?.datetime,
     };
     console.log(postTimezoneData);
     if (postTimezoneData.datetime !== undefined) {

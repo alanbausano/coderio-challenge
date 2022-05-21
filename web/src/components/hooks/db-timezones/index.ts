@@ -5,7 +5,7 @@ import { DBTimezonesApi } from "./api";
 const useDatabaseTimezones = (deleteConfirmationModal?: boolean) => {
   const queryClient = useQueryClient();
 
-  const { data: databaseTimezones } = useQuery(
+  const { data: databaseTimezones, isLoading } = useQuery(
     STRING_KEYS.DATABASE_TIMEZONES,
     DBTimezonesApi.getDBTimezones
   );
@@ -37,6 +37,7 @@ const useDatabaseTimezones = (deleteConfirmationModal?: boolean) => {
     createTimezone: mutate,
     databaseTimezones,
     deleteTimezone,
+    isLoading,
   };
 };
 

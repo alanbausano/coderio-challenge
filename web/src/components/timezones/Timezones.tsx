@@ -5,11 +5,12 @@ import { Button } from "primereact/button";
 import moment from "moment";
 import { Dialog } from "primereact/dialog";
 import { useState } from "react";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 export const TimezonesDash = () => {
   const [deleteConfirmationModal, setDeleteConfirmationModal] =
     useState<boolean>(false);
-  const { databaseTimezones, deleteTimezone } = useDatabaseTimezones(
+  const { databaseTimezones, deleteTimezone, isLoading } = useDatabaseTimezones(
     deleteConfirmationModal
   );
   const [deleteSelectedTimezone, setDeleteSelectedTimezone] =
@@ -47,43 +48,57 @@ export const TimezonesDash = () => {
       {databaseTimezones?.length ? (
         <div className="cards-container">
           {databaseTimezones?.map((t: any) => (
-            <>
-              <Card
-                title={t.timezone}
-                style={{ width: "25rem", marginBottom: "2em" }}
-                key={t._id}
-              >
-                <p className="m-0" style={{ lineHeight: "1.5" }}>
-                  {t?.timezone}
-                </p>
-                <p className="m-0" style={{ lineHeight: "1.5" }}>
-                  {moment(t?.datetime).format("YYYY/MM/DD")}
-                </p>
-                <p className="m-0" style={{ lineHeight: "1.5" }}>
-                  {moment(t?.datetime).format("hh:mm A")}
-                </p>
-                <Button onClick={() => handleDeleteConfirmationModal(t._id)}>
-                  {STRING_KEYS.DELETE_TIMEZONE_BUTTON}
-                </Button>
-              </Card>
-              <Dialog
-                header={STRING_KEYS.CREATE_TIMEZONE_HEADER}
-                visible={deleteConfirmationModal}
-                position={"center"}
-                modal
-                style={{ width: "50vw" }}
-                footer={() => renderFooter()}
-                draggable={false}
-                resizable={false}
-                onHide={() => setDeleteConfirmationModal(false)}
-              >
-                <p className="m-0">{STRING_KEYS.DELETE_TIMEZONE_CONFIRM}</p>
-              </Dialog>{" "}
-            </>
+            <Card
+              title={t.timezone}
+              style={{ width: "25rem", marginBottom: "2em" }}
+              key={t._id}
+            >
+              <p className="m-0" style={{ lineHeight: "1.5" }}>
+                {t?.timezone}
+              </p>
+              <p className="m-0" style={{ lineHeight: "1.5" }}>
+                {moment(t?.datetime).format("YYYY/MM/DD")}
+              </p>
+              <p className="m-0" style={{ lineHeight: "1.5" }}>
+                {new Date(t?.datetime).toUTCString()}
+              </p>
+              <Button onClick={() => handleDeleteConfirmationModal(t._id)}>
+                {STRING_KEYS.DELETE_TIMEZONE_BUTTON}
+              </Button>
+            </Card>
           ))}
+          <Dialog
+            header={STRING_KEYS.CREATE_TIMEZONE_HEADER}
+            visible={deleteConfirmationModal}
+            position={"center"}
+            modal
+            style={{ width: "50vw" }}
+            footer={() => renderFooter()}
+            draggable={false}
+            resizable={false}
+            onHide={() => setDeleteConfirmationModal(false)}
+          >
+            <p className="m-0">{STRING_KEYS.DELETE_TIMEZONE_CONFIRM}</p>
+          </Dialog>{" "}
         </div>
       ) : (
-        <>{<h2>{STRING_KEYS.EMPTY_TIMEZONES}</h2>}</>
+        <div style={{ display: "flex", width: "100%" }}>
+          {isLoading ? (
+            <>
+              <ProgressSpinner />
+            </>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "center",
+              }}
+            >
+              <h2>{STRING_KEYS.EMPTY_TIMEZONES}</h2>
+            </div>
+          )}
+        </div>
       )}
     </>
   );

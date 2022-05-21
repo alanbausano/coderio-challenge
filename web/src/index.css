@@ -14,7 +14,7 @@ code {
 
 .cards-container {
   display: grid;
-  grid-template: repeat(2, 1fr) / repeat(3, 1fr);
+  grid-template: repeat(2, 1fr) / repeat(4, 1fr);
   justify-items: center;
   margin: 30px;
 }
